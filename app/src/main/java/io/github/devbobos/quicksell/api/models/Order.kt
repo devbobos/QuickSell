@@ -1,4 +1,4 @@
-package io.github.devbobos.quicksell.api.responses
+package io.github.devbobos.quicksell.api.models
 
 data class Order(
     val uuid : String,

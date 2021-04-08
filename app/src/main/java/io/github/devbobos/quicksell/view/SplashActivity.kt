@@ -13,12 +13,12 @@ class SplashActivity : Activity() {
         GlobalScope.launch(Dispatchers.Default) {
             delay(500L)
             withContext(Dispatchers.Main) {
-                goMain()
+                start()
             }
         }
     }
 
-    private suspend fun goMain() {
+    private fun start() {
         val intent = Intent(baseContext, AuthActivity::class.java)
         startActivity(intent)
         finish()

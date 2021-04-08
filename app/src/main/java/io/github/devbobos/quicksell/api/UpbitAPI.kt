@@ -1,8 +1,9 @@
 package io.github.devbobos.quicksell.api
 
-import io.github.devbobos.quicksell.api.responses.Accounts
-import io.github.devbobos.quicksell.api.responses.MarketInfos
-import io.github.devbobos.quicksell.api.responses.Order
+import io.github.devbobos.quicksell.api.models.Accounts
+import io.github.devbobos.quicksell.api.models.ApiKey
+import io.github.devbobos.quicksell.api.models.MarketInfo
+import io.github.devbobos.quicksell.api.models.Order
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -23,7 +24,7 @@ interface UpbitAPI {
         @Header("Content-Type") contentType: String,
         @Header("Authorization") authorization: String,
         @Query("isDetails") isDetails: Boolean,
-    ): Call<List<MarketInfos>>
+    ): Call<List<MarketInfo>>
 
 //    주문하기
 //    주문 요청을 한다.
@@ -36,7 +37,7 @@ interface UpbitAPI {
         @Field("volume") volume: String, //주문량 (지정가, 시장가 매도 시 필수)
         @Field("price") price: String,  //주문 가격. (지정가, 시장가 매수 시 필수)
         @Field("ord_type") ord_type: String,    //주문 타입 (필수) limit : 지정가 주문, price : 시장가 주문(매수), market : 시장가 주문(매도)
-    ): Call<List<Order>>
+    ): Call<Order>
 
     //매수
     @POST("v1/orders")
@@ -47,7 +48,7 @@ interface UpbitAPI {
         @Field("side") side: String, //주문 종류 (필수) bid : 매수, ask : 매도
         @Field("price") price: String,  //주문 가격. (지정가, 시장가 매수 시 필수)
         @Field("ord_type") ord_type: String,    //주문 타입 (필수) limit : 지정가 주문, price : 시장가 주문(매수), market : 시장가 주문(매도)
-    ): Call<List<Order>>
+    ): Call<Order>
 
     //매도
     @POST("v1/orders")
@@ -58,5 +59,13 @@ interface UpbitAPI {
         @Field("side") side: String, //주문 종류 (필수) bid : 매수, ask : 매도
         @Field("volume") volume: String, //주문량 (지정가, 시장가 매도 시 필수)
         @Field("ord_type") ord_type: String,    //주문 타입 (필수) limit : 지정가 주문, price : 시장가 주문(매수), market : 시장가 주문(매도)
-    ): Call<List<Order>>
+    ): Call<Order>
+
+//    API 키 리스트 조회
+//    API 키 목록 및 만료 일자를 조회합니다.
+    @GET("v1/api_keys")
+    fun requestApiKeys(
+        @Header("Content-Type") contentType: String,
+        @Header("Authorization") authorization: String,
+    ): Call<List<ApiKey>>
 }

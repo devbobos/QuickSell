@@ -15,6 +15,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
+import io.github.devbobos.quicksell.Base;
+
 public class AES256 {
     private static AES256 instance;
 
@@ -27,7 +29,7 @@ public class AES256 {
         return instance;
     }
 
-    public String encrypt(Context context, String data)
+    public String encrypt(String data)
     {
         String result = "";
         try
@@ -37,7 +39,7 @@ public class AES256 {
             IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
 
-            final String key = getKeystoreAuthority(context);
+            final String key = getKeystoreAuthority();
             SecretKey secretKey = getSecretKey(key);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
             byte[] encryptedBytes = cipher.doFinal(data.getBytes());
@@ -65,7 +67,7 @@ public class AES256 {
         return result;
     }
 
-    public String decrypt(Context context, String encryptedData)
+    public String decrypt(String encryptedData)
     {
         String result = "";
         try
@@ -75,7 +77,7 @@ public class AES256 {
             IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
 
-            final String key = getKeystoreAuthority(context);
+            final String key = getKeystoreAuthority();
             SecretKey secretKey = getSecretKey(key);
 
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
@@ -118,7 +120,7 @@ public class AES256 {
         return secretKey;
     }
 
-    private String getKeystoreAuthority(Context context){
-        return context.getPackageName()+".keystore";
+    private String getKeystoreAuthority(){
+        return Base.context.getPackageName()+".keystore";
     }
 }

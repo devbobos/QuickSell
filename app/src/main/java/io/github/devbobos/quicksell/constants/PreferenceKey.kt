@@ -1,0 +1,14 @@
+package io.github.devbobos.quicksell.constants
+
+enum class PreferenceKey {
+    USER_ACCESS_KEY,
+    USER_ACCESS_KEY_EXPIRE_DATE,
+    USER_SECRET_KEY,
+    USER_SELECTED_MARKET_ID,
+    USER_SELECTED_MARKET_ENGLISH_NAME,
+    USER_SELECTED_MARKET_KOREAN_NAME,
+    PRICE_TYPE_BUY,
+    PRICE_TYPE_SELL,
+    MANUAL_PRICE_BUY,
+    MANUAL_PRICE_SELL,
+}
