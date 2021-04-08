@@ -9,7 +9,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import io.github.devbobos.quicksell.BaseActivity
 import io.github.devbobos.quicksell.R
 import io.github.devbobos.quicksell.helper.Utils
-import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.android.synthetic.main.auth_activity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,9 +21,9 @@ class AuthActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_activity)
 
-        main_button_redirectUpbit.setOnClickListener(this)
-        main_button_submit.setOnClickListener(this)
-        main_button_getKeyGuide.setOnClickListener(this)
+        auth_button_redirectUpbit.setOnClickListener(this)
+        auth_button_submit.setOnClickListener(this)
+        auth_button_getKeyGuide.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -56,17 +56,17 @@ class AuthActivity : BaseActivity(), View.OnClickListener {
         if(Utils.isEmpty(main_textInputEditText_accessKey.text)){
             val message = "Access Key를 입력해주세요"
             showSnackBar(message)
-            main_textView_resonseMessage.setText(message)
+            auth_textView_resonseMessage.setText(message)
             return
         }
         if(Utils.isEmpty(main_textInputEditText_secretKey.text)){
             val message = "Secret Key를 입력해주세요"
             showSnackBar(message)
-            main_textView_resonseMessage.setText(message)
+            auth_textView_resonseMessage.setText(message)
             return
         }
-        main_textView_resonseMessage.setText("")
-        main_progressBar.visibility = View.VISIBLE
+        auth_textView_resonseMessage.setText("")
+        auth_progressBar.visibility = View.VISIBLE
         GlobalScope.launch(Dispatchers.IO) {
             val accessKey = main_textInputEditText_accessKey.text.toString()
             val secretKey = main_textInputEditText_secretKey.text.toString()
@@ -78,7 +78,7 @@ class AuthActivity : BaseActivity(), View.OnClickListener {
                 .sign(algorithm)
             val authenticationToken = "Bearer $jwtToken"
             withContext(Dispatchers.Main){
-                main_progressBar.visibility = View.GONE
+                auth_progressBar.visibility = View.GONE
             }
         }
     }
