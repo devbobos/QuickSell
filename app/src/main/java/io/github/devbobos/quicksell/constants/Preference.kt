@@ -7,8 +7,3 @@ enum class Preference {
     PRICE_TYPE_BUY,
     PRICE_TYPE_SELL,
 }
-
-enum class PriceType{
-    MANUAL_PRICE, //지정가
-    MARKET_PRICE //시장가
-}
