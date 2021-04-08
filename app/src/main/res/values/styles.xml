@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name = "QuickSell">
+
+    </style>
+    <style name="QuickSell.TextView">
+
+    </style>
+    <style name="QuickSell.TextView.HeadLine" parent="@style/TextAppearance.AppCompat.Headline">
+
+    </style>
+    <style name="QuickSell.TextView.Warning" parent="@style/TextAppearance.AppCompat.Caption">
+
+    </style>
+    <style name="QuickSell.TextInputLayout" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:paddingLeft">32dp</item>
+        <item name="android:paddingRight">32dp</item>
+    </style>
+    <style name="QuickSell.TextInputEditText">
+        <item name="singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">text</item>
+    </style>
+    <style name="QuickSell.Button" parent="@style/Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_marginLeft">32dp</item>
+        <item name="android:layout_marginRight">32dp</item>
+    </style>
+    <style name="QuickSell.Button.Outlined" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_marginLeft">32dp</item>
+        <item name="android:layout_marginRight">32dp</item>
+    </style>
+    <style name="QuickSell.Button.Transparent" parent="@style/Widget.MaterialComponents.Button.TextButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">32dp</item>
+        <item name="android:layout_marginRight">32dp</item>
+    </style>
+</resources>
