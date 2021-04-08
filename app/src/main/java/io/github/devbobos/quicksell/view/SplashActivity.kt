@@ -19,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private suspend fun goMain() {
-        val intent = Intent(baseContext, MainActivity::class.java)
+        val intent = Intent(baseContext, AuthActivity::class.java)
         startActivity(intent)
         finish()
     }

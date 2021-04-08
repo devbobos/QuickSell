@@ -8,7 +8,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.github.devbobos.quicksell.BaseActivity
 import io.github.devbobos.quicksell.R
-import io.github.devbobos.quicksell.Utils
+import io.github.devbobos.quicksell.helper.Utils
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -16,10 +16,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class MainActivity : BaseActivity(), View.OnClickListener {
+class AuthActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        setContentView(R.layout.auth_activity)
 
         main_button_redirectUpbit.setOnClickListener(this)
         main_button_submit.setOnClickListener(this)
@@ -28,13 +28,13 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.main_button_redirectUpbit -> {
+            R.id.auth_button_redirectUpbit -> {
                 redirectUpbit()
             }
-            R.id.main_button_submit -> {
+            R.id.auth_button_submit -> {
                 submit()
             }
-            R.id.main_button_getKeyGuide -> {
+            R.id.auth_button_getKeyGuide -> {
                 getKeyGuide()
             }
         }

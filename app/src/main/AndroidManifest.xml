@@ -12,13 +12,19 @@
         android:name=".BaseApplication">
         <activity android:name=".view.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.QuickSell.FullScreen">
+            android:theme="@style/Theme.QuickSell.FullScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity"/>
+        <activity android:name=".view.AuthActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.FindMarketActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.SettingActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

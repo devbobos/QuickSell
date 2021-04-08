@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity">
+    tools:context=".view.AuthActivity">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         style="@style/QuickSell.TextView.HeadLine"
         />
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/main_textInputLayout_accessKey"
+        android:id="@+id/auth_textInputLayout_accessKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -34,12 +34,12 @@
             android:hint="Access Key"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/main_textInputLayout_secretKey"
+        android:id="@+id/auth_textInputLayout_secretKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_textInputLayout_accessKey"
+        app:layout_constraintTop_toBottomOf="@id/auth_textInputLayout_accessKey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
         style="@style/QuickSell.TextInputLayout">
@@ -50,12 +50,12 @@
             android:hint="Secret Key"/>
     </com.google.android.material.textfield.TextInputLayout>
     <TextView
-        android:id="@+id/main_textView_apiKeyWarning"
+        android:id="@+id/auth_textView_apiKeyWarning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_textInputLayout_secretKey"
+        app:layout_constraintTop_toBottomOf="@id/auth_textInputLayout_secretKey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
         android:layout_marginLeft="32dp"
@@ -65,61 +65,61 @@
         android:text="키 값은 암호화되어 앱에 저장되며 서버에 저장되지 않습니다."
         />
     <Button
-        android:id="@+id/main_button_redirectUpbit"
+        android:id="@+id/auth_button_redirectUpbit"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_textView_apiKeyWarning"
+        app:layout_constraintTop_toBottomOf="@id/auth_textView_apiKeyWarning"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
         style="@style/QuickSell.Button.Outlined"
         android:text="업비트 콘솔로 이동하기"
         />
     <Button
-        android:id="@+id/main_button_submit"
+        android:id="@+id/auth_button_submit"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_button_redirectUpbit"
+        app:layout_constraintTop_toBottomOf="@id/auth_button_redirectUpbit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
         style="@style/QuickSell.Button"
         android:text="인증하기"
         />
     <Button
-        android:id="@+id/main_button_getKeyGuide"
+        android:id="@+id/auth_button_getKeyGuide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_button_submit"
+        app:layout_constraintTop_toBottomOf="@id/auth_button_submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
         style="@style/QuickSell.Button.Transparent"
-        android:text="@string/main_button_getKeyGuide"
+        android:text="@string/auth_button_getKeyGuide"
         />
     <TextView
-        android:id="@+id/main_textView_resonseMessage"
+        android:id="@+id/auth_textView_resonseMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_button_getKeyGuide"
+        app:layout_constraintTop_toBottomOf="@id/auth_button_getKeyGuide"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         />
     <ProgressBar
-        android:id="@+id/main_progressBar"
+        android:id="@+id/auth_progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_button_getKeyGuide"
+        app:layout_constraintTop_toBottomOf="@id/auth_button_getKeyGuide"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
         android:visibility="gone"/>
     <TextView
-        android:id="@+id/main_textView_version"
+        android:id="@+id/auth_textView_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -1,4 +1,4 @@
-package io.github.devbobos.quicksell;
+package io.github.devbobos.quicksell.helper;
 
 import android.os.Bundle;
 import android.text.TextUtils;
