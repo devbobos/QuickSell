@@ -1,4 +1,4 @@
-package io.github.devbobos.quicksell.helper;
+package io.github.devbobos.quicksell.helper.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,9 +1,6 @@
 package io.github.devbobos.quicksell.api
 
-import io.github.devbobos.quicksell.api.models.Accounts
-import io.github.devbobos.quicksell.api.models.ApiKey
-import io.github.devbobos.quicksell.api.models.MarketInfo
-import io.github.devbobos.quicksell.api.models.Order
+import io.github.devbobos.quicksell.api.models.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -17,6 +14,15 @@ interface UpbitAPI {
         @Header("Authorization") authorization: String,
     ): Call<List<Accounts>>
 
+//    주문 가능 정보
+//    마켓별 주문 가능 정보를 확인한다.
+    @GET("v1/orders/chance")
+    fun getMarketOrderInfo(
+        @Header("Content-Type") contentType: String,
+        @Header("Authorization") authorization: String,
+        @Query("market") market: String,
+    ): Call<MarketOrderInfo>
+
 //    마켓 코드 조회
 //    업비트에서 거래 가능한 마켓 목록
     @GET("v1/market/all")
@@ -28,6 +34,7 @@ interface UpbitAPI {
 
 //    주문하기
 //    주문 요청을 한다.
+    @FormUrlEncoded
     @POST("v1/orders")
     fun requestOrder(
         @Header("Content-Type") contentType: String,
@@ -40,6 +47,7 @@ interface UpbitAPI {
     ): Call<Order>
 
     //매수
+    @FormUrlEncoded
     @POST("v1/orders")
     fun requestOrderBuy(
         @Header("Content-Type") contentType: String,
@@ -51,6 +59,7 @@ interface UpbitAPI {
     ): Call<Order>
 
     //매도
+    @FormUrlEncoded
     @POST("v1/orders")
     fun requestOrderSell(
         @Header("Content-Type") contentType: String,

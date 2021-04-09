@@ -1,6 +1,5 @@
 package io.github.devbobos.quicksell.helper.security;
 
-import android.content.Context;
 import android.util.Base64;
 
 import java.io.IOException;
@@ -18,16 +17,6 @@ import javax.crypto.spec.IvParameterSpec;
 import io.github.devbobos.quicksell.Base;
 
 public class AES256 {
-    private static AES256 instance;
-
-    private AES256() { }
-
-    public static AES256 getInstance() {
-        if(instance == null) {
-            instance = new AES256();
-        }
-        return instance;
-    }
 
     public String encrypt(String data)
     {
@@ -45,23 +34,17 @@ public class AES256 {
             byte[] encryptedBytes = cipher.doFinal(data.getBytes());
             result = Base64.encodeToString(encryptedBytes, Base64.NO_WRAP);
 
-        } catch (NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e)
-        {
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e)
-        {
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e)
-        {
+        } catch (BadPaddingException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e)
-        {
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e)
-        {
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
         return result;
@@ -70,8 +53,7 @@ public class AES256 {
     public String decrypt(String encryptedData)
     {
         String result = "";
-        try
-        {
+        try {
 //            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "AES");
             byte[] ivBytes = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
@@ -83,26 +65,19 @@ public class AES256 {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
             byte[] decryptedBytes = cipher.doFinal(Base64.decode(encryptedData, Base64.NO_WRAP));
             result = new String(decryptedBytes, "UTF-8");
-        } catch (InvalidAlgorithmParameterException e)
-        {
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e)
-        {
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch (NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e)
-        {
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e)
-        {
+        } catch (BadPaddingException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e)
-        {
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
         }
         return result;

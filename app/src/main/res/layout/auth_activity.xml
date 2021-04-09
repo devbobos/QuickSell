@@ -28,7 +28,7 @@
         android:layout_marginBottom="120dp"
         style="@style/QuickSell.TextInputLayout">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/main_textInputEditText_accessKey"
+            android:id="@+id/auth_textInputEditText_accessKey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Access Key"/>
@@ -44,7 +44,7 @@
         app:layout_constraintVertical_bias="0"
         style="@style/QuickSell.TextInputLayout">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/main_textInputEditText_secretKey"
+            android:id="@+id/auth_textInputEditText_secretKey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Secret Key"/>
@@ -107,6 +107,7 @@
         app:layout_constraintVertical_bias="0"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
+        android:textColor="@color/error"
         />
     <ProgressBar
         android:id="@+id/auth_progressBar"
