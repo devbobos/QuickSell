@@ -6,9 +6,9 @@ import android.os.Bundle
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import io.github.devbobos.quicksell.ApplicationCache
-import io.github.devbobos.quicksell.BuildConfig
 import io.github.devbobos.quicksell.R
 import io.github.devbobos.quicksell.helper.utils.Utils
+import io.github.devbobos.quicksell.view.home.HomeActivity
 import kotlinx.coroutines.*
 
 
@@ -45,15 +45,16 @@ class SplashActivity : Activity() {
     }
 
     private fun shouldMoveAuthActivity(): Boolean{
-        if(Utils.isEmpty(ApplicationCache.getInstance().jwtToken)){
-            return true
-        }
-        if(Utils.isEmpty(ApplicationCache.getInstance().accessKey)){
-            return true
-        }
-        if(Utils.isEmpty(ApplicationCache.getInstance().secretKey)){
-            return true
-        }
         return false
+//        if(Utils.isEmpty(ApplicationCache.getInstance().jwtToken)){
+//            return true
+//        }
+//        if(Utils.isEmpty(ApplicationCache.getInstance().accessKey)){
+//            return true
+//        }
+//        if(Utils.isEmpty(ApplicationCache.getInstance().secretKey)){
+//            return true
+//        }
+//        return false
     }
 }

@@ -9,6 +9,7 @@ import io.github.devbobos.quicksell.api.UpbitAPIService
 import io.github.devbobos.quicksell.constants.PreferenceKey
 import io.github.devbobos.quicksell.helper.security.AES256
 import io.github.devbobos.quicksell.helper.utils.Utils
+import io.github.devbobos.quicksell.view.home.HomeActivity
 import kotlinx.android.synthetic.main.auth_activity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -80,11 +81,20 @@ class AuthActivity : BaseActivity(), View.OnClickListener {
                     auth_textView_resonseMessage.setText(message)
                 } else{
                     response?.let {
-                        val errorResponse = service.parseErrorResponse(it.errorBody())
-                        if(Utils.isNull(errorResponse)){
-                            setErrorMessage("${it.code()}", it.message())
-                        } else{
-                            setErrorMessage(errorResponse!!.name, errorResponse!!.message);
+                        when(it.code()){
+                            200 -> {
+                                val Intent = Intent(applicationContext, HomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+                            else -> {
+                                val errorResponse = service.parseErrorResponse(it.errorBody())
+                                if(Utils.isNull(errorResponse)){
+                                    setErrorMessage("${it.code()}", it.message())
+                                } else{
+                                    setErrorMessage(errorResponse!!.name, errorResponse!!.message);
+                                }
+                            }
                         }
                     }
                 }
@@ -98,10 +108,11 @@ class AuthActivity : BaseActivity(), View.OnClickListener {
         Utils.put(PreferenceKey.STRING_USER_ACCESS_KEY_EXPIRE_DATE.name, ApplicationCache.getInstance().accessKeyExpireDate)
         Utils.put(PreferenceKey.STRING_USER_SECRET_KEY.name, encrypter.encrypt(ApplicationCache.getInstance().secretKey))
     }
+
     private fun setErrorMessage(code:String, message:String){
-        var value = "[${code}] ${message}"
+        var value = "${message}"
         if(Utils.isEmpty(message)){
-            value = "[${code}] 키를 다시 확인해주세요"
+            value = "키를 다시 확인해주세요"
         }
         auth_textView_resonseMessage.setText(value)
     }

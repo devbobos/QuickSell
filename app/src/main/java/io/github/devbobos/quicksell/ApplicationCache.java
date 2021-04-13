@@ -2,6 +2,9 @@ package io.github.devbobos.quicksell;
 
 import android.content.Context;
 
+import java.util.List;
+
+import io.github.devbobos.quicksell.api.models.Accounts;
 import io.github.devbobos.quicksell.api.models.MarketInfo;
 import io.github.devbobos.quicksell.api.models.MarketOrderInfo;
 import io.github.devbobos.quicksell.constants.PreferenceKey;
@@ -16,6 +19,7 @@ public class ApplicationCache {
     private String jwtToken;
     private MarketInfo selectedMarket;
     private MarketOrderInfo selectedMarketOrderInfo;
+    private List<Accounts> accountsList;
 
     private ApplicationCache() { }
 
@@ -101,5 +105,14 @@ public class ApplicationCache {
 
     public void setSelectedMarketOrderInfo(MarketOrderInfo selectedMarketOrderInfo) {
         this.selectedMarketOrderInfo = selectedMarketOrderInfo;
+    }
+
+    public List<Accounts> getAccountsList() {
+        return accountsList;
+    }
+
+    public void setAccountsList(
+            List<Accounts> accountsList) {
+        this.accountsList = accountsList;
     }
 }
