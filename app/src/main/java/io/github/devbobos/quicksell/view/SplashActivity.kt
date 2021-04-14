@@ -16,6 +16,7 @@ class SplashActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_activity)
+        initLogger()
         GlobalScope.launch(Dispatchers.Default) {
             delay(500L)
             withContext(Dispatchers.Main) {

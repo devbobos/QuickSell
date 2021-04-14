@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="error">#B00020</color>
     <color name="divider">#DFDFE0</color>
+    <color name="instagram_1">#feda75</color>
+    <color name="instagram_2">#fa7e1e</color>
+    <color name="instagram_3">#d62976</color>
+    <color name="instagram_4">#962fbf</color>
+    <color name="instagram_5">#4f5bd5</color>
+    <color name="bid">#D32F2F</color>
+    <color name="ask">#1976D2</color>
 </resources>

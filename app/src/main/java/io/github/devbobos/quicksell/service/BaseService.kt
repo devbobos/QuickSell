@@ -1,58 +1,33 @@
-package io.github.devbobos.quicksell
+package io.github.devbobos.quicksell.service
 
+import android.app.Service
+import android.content.Intent
 import android.content.res.Resources
-import android.os.Bundle
+import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
+import io.github.devbobos.quicksell.R
 import kotlinx.android.synthetic.main.base_toast.view.*
 import java.lang.NumberFormatException
 
-open class BaseActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setTitle("")
-        showBackButton(true)
+open class BaseService: Service() {
+
+    override fun onBind(intent: Intent?): IBinder? {
+        TODO("Not yet implemented")
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-            }
-            else -> {
-                return super.onOptionsItemSelected(item);
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    fun showSnackBar(message: String) {
-        val view = getWindow().getDecorView().findViewById<View>(android.R.id.content)
-        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
-    }
-
-    fun showBackButton(isShow: Boolean) {
-        actionBar?.let {
-            it.setDisplayShowHomeEnabled(isShow)
-            it.setDisplayHomeAsUpEnabled(isShow)
-        }
-        supportActionBar?.let {
-            it.setDisplayShowHomeEnabled(isShow)
-            it.setDisplayHomeAsUpEnabled(isShow)
-        }
-    }
     fun showToast(message:String){
         showToast(message, -1)
     }
 
     fun showToast(message:String, imageResourceId:Int){
         val toast = Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-        val view = layoutInflater.inflate(R.layout.base_toast, null, false)
+        val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.base_toast, null, false)
         with(view){
             toast_textView_message.setText(message)
             if(imageResourceId > 0){

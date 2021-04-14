@@ -57,7 +57,7 @@
                 android:text="보유KRW"
                 />
             <TextView
-                android:id="@+id/home_textView_accountKrwValue"
+                android:id="@+id/home_textView_accountKrwBalanceValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -77,7 +77,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/home_textView_accountKrw"
-                app:layout_constraintBottom_toBottomOf="@id/home_textView_accountKrwValue"
+                app:layout_constraintBottom_toBottomOf="@id/home_textView_accountKrwBalanceValue"
                 style="@style/QuickSell.Divider.Vertical"
                 />
             <TextView
@@ -94,14 +94,14 @@
                 android:text="보유자산"
                 />
             <TextView
-                android:id="@+id/home_textView_accountCoinValue"
+                android:id="@+id/home_textView_accountAllBalanceValue"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:layout_constraintLeft_toRightOf="@id/home_view_divider_1"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintTop_toTopOf="@id/home_textView_accountKrwValue"
-                app:layout_constraintBottom_toBottomOf="@id/home_textView_accountKrwValue"
+                app:layout_constraintTop_toTopOf="@id/home_textView_accountKrwBalanceValue"
+                app:layout_constraintBottom_toBottomOf="@id/home_textView_accountKrwBalanceValue"
                 android:layout_marginLeft="32dp"
                 style="@style/QuickSell.TextView.Number"
                 android:text="0"
@@ -113,7 +113,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintTop_toBottomOf="@id/home_textView_accountKrwValue"
+                app:layout_constraintTop_toBottomOf="@id/home_textView_accountKrwBalanceValue"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintVertical_bias="0"
                 android:layout_marginTop="16dp"

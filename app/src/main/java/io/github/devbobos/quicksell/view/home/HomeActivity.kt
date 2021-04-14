@@ -2,20 +2,25 @@ package io.github.devbobos.quicksell.view.home
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.PercentFormatter
 import com.orhanobut.logger.Logger
 import io.github.devbobos.quicksell.ApplicationCache
 import io.github.devbobos.quicksell.BaseActivity
 import io.github.devbobos.quicksell.R
 import io.github.devbobos.quicksell.api.UpbitAPIService
+import io.github.devbobos.quicksell.api.models.Accounts
 import io.github.devbobos.quicksell.helper.utils.Utils
-import io.github.devbobos.quicksell.service.OverlayViewService
+import io.github.devbobos.quicksell.service.OverlayService
 import io.github.devbobos.quicksell.view.SettingActivity
 import io.github.devbobos.quicksell.view.findmarket.FindMarketActivity
 import kotlinx.android.synthetic.main.home_activity.*
@@ -23,8 +28,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.DecimalFormat
+
 
 class HomeActivity: BaseActivity(), View.OnClickListener {
+    val requestCodeForRequestOverlayPermission = 3
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
@@ -48,10 +57,12 @@ class HomeActivity: BaseActivity(), View.OnClickListener {
                 } else{
                     home_button_selectMarket.setText("선택하기")
                 }
+                home_button_start.isEnabled = true
             }
         }
-        updateAccountChart()
+//        updateAccountChart()
         home_horizontalBarChart_account.visibility = View.VISIBLE
+        showToast("test")
     }
 
     override fun onClick(v: View?) {
@@ -65,10 +76,14 @@ class HomeActivity: BaseActivity(), View.OnClickListener {
                 startActivity(intent)
             }
             R.id.home_button_start -> {
-                if(home_button_start.isEnabled){
-                    startOverlayViewService()
-                } else{
-
+                if (home_button_start.isEnabled) {
+                    if(checkOverlayPermission()){
+                        startOverlayService()
+                    } else{
+                        requestOverlayPermission(requestCodeForRequestOverlayPermission)
+                    }
+                } else {
+                    showToast("먼저 매수/매도 대상 코인을 선택해주세요")
                 }
             }
         }
@@ -98,18 +113,56 @@ class HomeActivity: BaseActivity(), View.OnClickListener {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             setDrawInside(true)
-            form = Legend.LegendForm.LINE
+            form = Legend.LegendForm.CIRCLE
         }
     }
 
-    private fun updateAccountChart(){
-        val list1 = arrayListOf<BarEntry>(BarEntry(1f, floatArrayOf(20f, 40f, 40f)))
-        val barDataSet1 = BarDataSet(list1, "")
-        barDataSet1.setColors(Color.RED, Color.BLUE, Color.GREEN)
-        barDataSet1.valueTextColor = Color.WHITE
-        barDataSet1.stackLabels = arrayOf("1", "2", "3")
-        val barData = BarData(barDataSet1)
+    private fun updateAccountInfo(accountsList: List<Accounts>){
+        var krwBalance: Float = 0f
+        var allBalance: Float = 0f
+        for(item in accountsList){
+            if("KRW".equals(item.currency)){
+                var krwBalanceFloat = item.balance.float
+                krwBalance = krwBalanceFloat
+            } else{
+                var balanceFloat = item.balance.float
+                var avgBuyPriceFloat = item.avg_buy_price.float
+                allBalance += balanceFloat * avgBuyPriceFloat
+            }
+        }
+        allBalance += krwBalance
+        val stringFormat = DecimalFormat("###,###,##0.0")
+        home_textView_accountKrwBalanceValue.setText("${stringFormat.format(krwBalance)}")
+        home_textView_accountAllBalanceValue.setText("${stringFormat.format(allBalance)}")
+    }
+
+    private fun updateAccountChart(accountsList: List<Accounts>){
+        val valuePercentageList = mutableListOf<Float>()
+        val labelList = mutableListOf<String>()
+        var valueSum = 0f
+        for(item in accountsList){
+            var balanceFloatValue = item.balance.float
+            valueSum = valueSum + balanceFloatValue
+            valuePercentageList.add(balanceFloatValue)
+            labelList.add(item.currency)
+        }
+        var position = 0
+        for(item in valuePercentageList){
+            if(item == 0f){
+                //zero operation
+            } else{
+                valuePercentageList.set(position, item / valueSum * 100f)
+            }
+            position++;
+        }
+        val dataList = arrayListOf<BarEntry>(BarEntry(1f, valuePercentageList.toFloatArray()))
+        val barDataSet = BarDataSet(dataList, "")
+        barDataSet.setColors(getColor(R.color.instagram_1), getColor(R.color.instagram_2), getColor(R.color.instagram_3), getColor(R.color.instagram_4), getColor(R.color.instagram_5))
+        barDataSet.valueTextColor = Color.WHITE
+        barDataSet.stackLabels = labelList.toTypedArray()
+        val barData = BarData(barDataSet)
         barData.setValueTextColor(Color.WHITE)
+        barData.setValueFormatter(PercentFormatter())
         home_horizontalBarChart_account.data = barData
     }
 
@@ -130,7 +183,7 @@ class HomeActivity: BaseActivity(), View.OnClickListener {
             return
         }
         home_textView_marketName.setText("${marketInfo.korean_name}(${marketInfo.english_name})")
-        home_textView_feeValue.setText("매수 : ${marketOrderInfo.ask_fee.toInt()*100}% 매도 : ${marketOrderInfo.bid_fee.toInt()*100}%")
+        home_textView_feeValue.setText("매수 : ${marketOrderInfo.ask_fee.int * 100}% 매도 : ${marketOrderInfo.bid_fee.int * 100}%")
         var balanceValue: String = "0"
         var avgBuyPriceValue = "0"
         var unitCurrency = ""
@@ -146,12 +199,29 @@ class HomeActivity: BaseActivity(), View.OnClickListener {
         home_textView_avgBuyPriceValue.setText("${avgBuyPriceValue} ${unitCurrency}")
     }
 
-    private fun startOverlayViewService(){
-        val intent = Intent(applicationContext, OverlayViewService::class.java)
+    private fun startOverlayService(){
+        val intent = Intent(applicationContext, OverlayService::class.java)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             startForegroundService(intent)
         } else{
             startService(intent)
         }
+    }
+
+    private fun checkOverlayPermission(): Boolean{
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {   // 마시멜로우 이상일 경우
+            if(Settings.canDrawOverlays(this)){
+                return true
+            } else{
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun requestOverlayPermission(requestCode: Int){
+        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+        intent.setData(Uri.parse("package:$packageName"))
+        startActivityForResult(intent, requestCode)
     }
 }
