@@ -47,23 +47,7 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
     fun showToast(message:String){
-        showToast(message, -1)
-    }
-
-    fun showToast(message:String, imageResourceId:Int){
         val toast = Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-        val view = layoutInflater.inflate(R.layout.base_toast, null, false)
-        with(view){
-            toast_textView_message.setText(message)
-            if(imageResourceId > 0){
-                toast_imageView.visibility = View.VISIBLE
-                toast_imageView.setImageResource(imageResourceId)
-            } else{
-                toast_imageView.visibility = View.GONE
-            }
-        }
-        toast.view = view
-        toast.setGravity(Gravity.BOTTOM or Gravity.CENTER,0, 16.dp)
         toast.show()
     }
 

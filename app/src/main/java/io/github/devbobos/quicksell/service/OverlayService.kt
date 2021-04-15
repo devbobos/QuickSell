@@ -7,7 +7,10 @@ import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
 import android.view.*
+import android.widget.TextView
 import androidx.core.app.NotificationCompat
+import androidx.transition.TransitionInflater
+import androidx.transition.TransitionManager
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import io.github.devbobos.quicksell.Base
 import io.github.devbobos.quicksell.Base.context
@@ -15,6 +18,10 @@ import io.github.devbobos.quicksell.R
 import io.github.devbobos.quicksell.api.UpbitAPIService
 import io.github.devbobos.quicksell.helper.utils.Utils
 import io.github.devbobos.quicksell.view.home.HomeActivity
+import kotlinx.coroutines.*
+import java.util.*
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.BlockingQueue
 
 
 class OverlayService : BaseService(){
@@ -29,6 +36,8 @@ class OverlayService : BaseService(){
     val askButtonTag = "${Base.context.packageName}.tag.ask"
     var overlayBidButtonView:View? = null
     var overlayAskButtonView:View? = null
+    var overlayToastView:View? = null
+    val toastQueue:ArrayBlockingQueue<String> = ArrayBlockingQueue<String>(5)
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -68,15 +77,18 @@ class OverlayService : BaseService(){
                 wm.removeView(overlayAskButtonView);
                 overlayAskButtonView = null
             }
+            if(Utils.notNull(overlayToastView)) {
+                wm.removeView(overlayToastView);
+                overlayToastView = null
+            }
         }
     }
 
     fun initBidButton(){
-        val inflate = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
         val params = WindowManager.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -87,20 +99,20 @@ class OverlayService : BaseService(){
             params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         }
 
-        params.gravity = Gravity.RIGHT
-        params.x = 0
-        params.y = 0
+        params.gravity = Gravity.BOTTOM or Gravity.RIGHT
         val bidButtonView = getOverlayBidButtonViewWithInit()
         val bidButton = bidButtonView!!.findViewById<ExtendedFloatingActionButton>(R.id.overlay_extendedFloatingActionButton_bid)
         bidButton.setTag(bidButtonTag)
         bidButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
-                showToast("onClick")
+                addCustomToastMessage("onClick")
+                showCustomToast()
             }
         })
         bidButton.setOnLongClickListener(object: View.OnLongClickListener{
             override fun onLongClick(v: View?): Boolean {
-                showToast("onLongClick")
+                addCustomToastMessage("onLongClick")
+                showCustomToast()
                 return true
             }
 
@@ -109,11 +121,10 @@ class OverlayService : BaseService(){
     }
 
     fun initAskButton(){
-        val inflate = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
         val params = WindowManager.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -124,20 +135,20 @@ class OverlayService : BaseService(){
             params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         }
 
-        params.gravity = Gravity.LEFT
-        params.x = 0
-        params.y = 0
+        params.gravity = Gravity.BOTTOM or Gravity.LEFT
         val askButtonView = getOverlayAskButtonViewWithInit()
         val askButton = askButtonView!!.findViewById<ExtendedFloatingActionButton>(R.id.overlay_extendedFloatingActionButton_ask)
         askButton.setTag(askButtonTag)
         askButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
-                showToast("onClick")
+                addCustomToastMessage("onClick")
+                showCustomToast()
             }
         })
         askButton.setOnLongClickListener(object: View.OnLongClickListener{
             override fun onLongClick(v: View?): Boolean {
-                showToast("onLongClick")
+                addCustomToastMessage("onLongClick")
+                showCustomToast()
                 return true
             }
         })
@@ -197,5 +208,46 @@ class OverlayService : BaseService(){
             overlayAskButtonView = inflater.inflate(R.layout.overlay_ask_layout, null)
         }
         return overlayAskButtonView
+    }
+
+    fun addCustomToastMessage(message: String){
+        toastQueue.add(message)
+    }
+
+    fun showCustomToast(){
+        val item = toastQueue.take()
+        if(Utils.notNull(item)){
+            if(Utils.isNull(overlayToastView)){
+                val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+                val params = WindowManager.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                                or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                                or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                        PixelFormat.TRANSLUCENT)
+                if(Build.VERSION.SDK_INT >= 26){
+                    params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                }
+
+                params.gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+                params.windowAnimations = R.style.QuickSell_Toast
+                params.y = 200
+                overlayToastView = inflater.inflate(R.layout.overlay_toast_layout, null)
+                val textView = overlayToastView!!.findViewById<TextView>(R.id.toast_textView_message)
+                textView.setText(item)
+                windowManager.addView(overlayToastView, params)
+                GlobalScope.launch(Dispatchers.Default) {
+                    delay(1000L)
+                    withContext(Dispatchers.Main) {
+                        windowManager.removeView(overlayToastView)
+                        overlayToastView = null
+//                        showCustomToast()
+                    }
+                }
+            }
+        }
     }
 }
