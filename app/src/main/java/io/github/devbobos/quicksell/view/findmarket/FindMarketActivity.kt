@@ -26,7 +26,7 @@ class FindMarketActivity: BaseActivity(), View.OnClickListener{
         findMarket_progressBar.visibility = View.VISIBLE
         GlobalScope.launch(Dispatchers.IO) {
             val service = UpbitAPIService()
-            val list = listOf<MarketInfo>()
+            val list = listOf<MarketInfo>(MarketInfo("a", "비트코인", "BTC", ""), MarketInfo("b", "도기코인", "DOGE", ""))
             findMarketAdapter = FindMarketAdapter(this@FindMarketActivity, list)
             findMarket_recyclerView.adapter = findMarketAdapter
             withContext(Dispatchers.Main){

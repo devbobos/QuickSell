@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">QuickSell</string>
     <string name="auth_button_getKeyGuide"><u>키 가져오는 방법이 궁금하시다면?</u></string>
+    <string name="warning">이 앱은 사용자의 데이터를 서버에 저장하지 않으며, 앱에 저장되는 개인정보는 전부 암호화되어 저장됩니다. 또한 이 앱을 활용하여 동작하는 모든 행위는 본인의 책임이며 개발자가 책임지지 않습니다. 아래 "넘어가기" 버튼을 눌러 앱을 사용할 경우 이 경고문을 모두 읽고 동의한것으로 간주합니다.</string>
 </resources>

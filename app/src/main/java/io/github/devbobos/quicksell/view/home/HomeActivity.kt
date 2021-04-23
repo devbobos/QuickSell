@@ -58,11 +58,20 @@ class HomeActivity: BaseActivity(), View.OnClickListener {
                     home_button_selectMarket.setText("선택하기")
                 }
                 home_button_start.isEnabled = true
+                val list = listOf<Accounts>(
+                    Accounts("BTC", "100", "", "1000", false, "BTC"), Accounts(
+                        "KRW",
+                        "1000",
+                        "",
+                        "1000",
+                        false,
+                        "KRW"
+                    )
+                )
+                updateAccountChart(list)
+                home_horizontalBarChart_account.visibility = View.VISIBLE
             }
         }
-//        updateAccountChart()
-        home_horizontalBarChart_account.visibility = View.VISIBLE
-        showToast("test")
     }
 
     override fun onClick(v: View?) {
@@ -77,9 +86,9 @@ class HomeActivity: BaseActivity(), View.OnClickListener {
             }
             R.id.home_button_start -> {
                 if (home_button_start.isEnabled) {
-                    if(checkOverlayPermission()){
+                    if (checkOverlayPermission()) {
                         startOverlayService()
-                    } else{
+                    } else {
                         requestOverlayPermission(requestCodeForRequestOverlayPermission)
                     }
                 } else {
@@ -105,9 +114,13 @@ class HomeActivity: BaseActivity(), View.OnClickListener {
             xAxis.setDrawLabels(false)
             xAxis.setDrawAxisLine(false)
             xAxis.position = XAxis.XAxisPosition.BOTH_SIDED
-            xAxis.mAxisMaximum = 100f
-            xAxis.mAxisMinimum = 0f
             setTouchEnabled(false)
+//            setViewPortOffsets(0f, 0f, 0f, 0f);
+//            setVisibleXRangeMinimum(0f)
+//            setVisibleXRangeMaximum(100f)
+            xAxis.mAxisMinimum = 0f
+            xAxis.mAxisMaximum = 100f
+            fitScreen()
         }
         home_horizontalBarChart_account.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
@@ -157,13 +170,18 @@ class HomeActivity: BaseActivity(), View.OnClickListener {
         }
         val dataList = arrayListOf<BarEntry>(BarEntry(1f, valuePercentageList.toFloatArray()))
         val barDataSet = BarDataSet(dataList, "")
-        barDataSet.setColors(getColor(R.color.instagram_1), getColor(R.color.instagram_2), getColor(R.color.instagram_3), getColor(R.color.instagram_4), getColor(R.color.instagram_5))
+        barDataSet.setColors(
+            getColor(R.color.instagram_1), getColor(R.color.instagram_2), getColor(
+                R.color.instagram_3
+            ), getColor(R.color.instagram_4), getColor(R.color.instagram_5)
+        )
         barDataSet.valueTextColor = Color.WHITE
         barDataSet.stackLabels = labelList.toTypedArray()
         val barData = BarData(barDataSet)
         barData.setValueTextColor(Color.WHITE)
         barData.setValueFormatter(PercentFormatter())
         home_horizontalBarChart_account.data = barData
+        home_horizontalBarChart_account.notifyDataSetChanged()
     }
 
     private fun updateSelectedMarketInfo(){

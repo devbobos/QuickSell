@@ -99,6 +99,7 @@ class OverlayService : BaseService(){
         }
 
         params.gravity = Gravity.BOTTOM or Gravity.RIGHT
+        params.windowAnimations = R.style.QuickSell_Overlay
         val bidButtonView = getOverlayBidButtonViewWithInit()
         val bidButton = bidButtonView!!.findViewById<ExtendedFloatingActionButton>(R.id.overlay_extendedFloatingActionButton_bid)
         bidButton.setTag(bidButtonTag)
@@ -154,7 +155,7 @@ class OverlayService : BaseService(){
         if(Build.VERSION.SDK_INT >= 26){
             params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         }
-
+        params.windowAnimations = R.style.QuickSell_Overlay
         params.gravity = Gravity.BOTTOM or Gravity.LEFT
         val askButtonView = getOverlayAskButtonViewWithInit()
         val askButton = askButtonView!!.findViewById<ExtendedFloatingActionButton>(R.id.overlay_extendedFloatingActionButton_ask)

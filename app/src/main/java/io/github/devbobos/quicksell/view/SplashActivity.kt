@@ -18,7 +18,7 @@ class SplashActivity : Activity() {
         setContentView(R.layout.splash_activity)
         initLogger()
         GlobalScope.launch(Dispatchers.Default) {
-            delay(500L)
+            delay(1500L)
             withContext(Dispatchers.Main) {
                 start()
             }
@@ -36,11 +36,12 @@ class SplashActivity : Activity() {
 
     private fun start() {
         val intent:Intent
-        if(shouldMoveAuthActivity()){
-            intent = Intent(baseContext, AuthActivity::class.java)
-        } else{
-            intent = Intent(baseContext, HomeActivity::class.java)
-        }
+//        if(shouldMoveAuthActivity()){
+//            intent = Intent(baseContext, AuthActivity::class.java)
+//        } else{
+//            intent = Intent(baseContext, HomeActivity::class.java)
+//        }
+        intent = Intent(baseContext, WarningActivity::class.java)
         startActivity(intent)
         finish()
     }
